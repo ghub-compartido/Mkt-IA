@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoMark - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">VM</div>
+                <span class="brand-name">VideoMark</span>
+            </div>
+            <nav class="top-nav">
+                <a href="#dashboard" class="active">Dashboard</a>
+                <a href="#campaigns">Campañas</a>
+                <a href="#templates">Plantillas</a>
+                <a href="#analytics">Análisis</a>
+            </nav>
+            <div class="top-actions">
+                <button class="ghost">Español ▼</button>
+                <button class="ghost">Descargar</button>
+                <button class="primary">Publicar</button>
+            </div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="section-label">Panel</div>
+                <button class="nav-btn active">🏠 Dashboard</button>
+                <button class="nav-btn">📁 Campañas</button>
+                <button class="nav-btn">🎞 Plantillas</button>
+                <button class="nav-btn">📊 Analítica</button>
+                <button class="nav-btn">⚙️ Configuración</button>
+
+                <div class="profile-card">
+                    <img class="avatar" src="https://api.dicebear.com/7.x/notionists/svg?seed=karla" alt="Perfil">
+                    <div>
+                        <p class="profile-name">Carla Montero</p>
+                        <p class="profile-role">Diseño UX/UI</p>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="content" id="dashboard">
+                <section class="hero">
+                    <div>
+                        <p class="eyebrow">Crear Video</p>
+                        <h1>Diseña y lanza campañas en minutos</h1>
+                        <p class="muted">Configura los formatos, edita el guion y publica en tus plataformas favoritas desde un solo panel.</p>
+                        <div class="chip-row" id="formatChips">
+                            <button class="chip active" data-format="TikTok">TikTok</button>
+                            <button class="chip" data-format="YouTube">YouTube</button>
+                            <button class="chip" data-format="Instagram">Instagram</button>
+                        </div>
+                    </div>
+                    <div class="cta-group">
+                        <button class="secondary" id="generateVideo">Generar Video</button>
+                        <button class="ghost" onclick="document.getElementById('newCampaign').scrollIntoView({behavior:'smooth'})">Nueva Campaña</button>
+                    </div>
+                </section>
+
+                <section class="grid two-col">
+                    <div class="card panel">
+                        <div class="card-header">
+                            <div>
+                                <p class="muted small">Formato de Video</p>
+                                <h3 id="selectedFormat">TikTok (9:16)</h3>
+                            </div>
+                            <span class="badge success">Optimizado</span>
+                        </div>
+                        <div class="options-row">
+                            <div>
+                                <p class="muted small">Audiencia</p>
+                                <strong>Marketing</strong>
+                                <p class="muted small">3 variantes A/B</p>
+                            </div>
+                            <div>
+                                <p class="muted small">Tono</p>
+                                <strong>Inspirador</strong>
+                            </div>
+                            <div>
+                                <p class="muted small">Ideal</p>
+                                <strong>15 segundos</strong>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="option-list">
+                            <label class="option">
+                                <div>
+                                    <p class="small">Variantes</p>
+                                    <p class="muted small">3 versiones</p>
+                                </div>
+                                <button class="ghost icon">＋</button>
+                            </label>
+                            <label class="option">
+                                <div>
+                                    <p class="small">Guion</p>
+                                    <p class="muted small">2 enfoques</p>
+                                </div>
+                                <button class="ghost icon">📝</button>
+                            </label>
+                            <label class="option">
+                                <div>
+                                    <p class="small">Formato</p>
+                                    <p class="muted small">Vertical 9:16</p>
+                                </div>
+                                <button class="ghost icon">🔄</button>
+                            </label>
+                            <button class="ghost">Iniciar Research</button>
+                        </div>
+                    </div>
+
+                    <div class="card panel preview">
+                        <div class="card-header">
+                            <div>
+                                <p class="muted small">Vista Previa del Video</p>
+                                <h3 id="previewTitle">Video listo para publicar</h3>
+                            </div>
+                            <div class="chip-row compact">
+                                <span class="chip">Ideas</span>
+                                <span class="chip">Copys</span>
+                                <span class="chip">Estudio</span>
+                                <span class="chip">Resources</span>
+                            </div>
+                        </div>
+                        <div class="video-frame" id="videoFrame">
+                            <div class="play-icon">▶</div>
+                            <p class="muted">Vista previa generada</p>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="preview-footer">
+                            <div>
+                                <p class="small">Detalles del Video</p>
+                                <p class="muted small">Periodo vacacional</p>
+                            </div>
+                            <div class="preview-actions">
+                                <button class="ghost icon">✂️ Recortar</button>
+                                <button class="ghost icon">⌛ Testear</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="grid three-col" id="campaigns">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <p class="muted small">Campañas Sugeridas</p>
+                                <h3>Mis Campañas</h3>
+                            </div>
+                            <div class="actions-inline">
+                                <button class="ghost icon" id="filterBtn">Filtro</button>
+                                <button class="ghost icon">⬇</button>
+                                <input type="text" id="searchInput" class="input" placeholder="Buscar...">
+                                <button class="primary" id="newCampaignBtn">+ Nueva Campaña</button>
+                            </div>
+                        </div>
+                        <div class="campaign-grid" id="campaignGrid"></div>
+                    </div>
+
+                    <div class="card stats" id="templates">
+                        <p class="muted small">Estadísticas Rápidas</p>
+                        <div class="stat">
+                            <p class="muted small">Tasa de clics</p>
+                            <strong id="ctrStat">42%</strong>
+                            <span class="trend">▲ 9.5%</span>
+                        </div>
+                        <div class="stat">
+                            <p class="muted small">Reproducciones</p>
+                            <strong id="playsStat">8.2K</strong>
+                            <span class="trend up">▲ 12%</span>
+                        </div>
+                        <div class="stat">
+                            <p class="muted small">Conversiones</p>
+                            <strong id="convStat">125K</strong>
+                            <span class="trend">▲ 9%</span>
+                        </div>
+                        <div class="stat badge-stack">
+                            <span class="badge success">Lista para publicar</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card form" id="newCampaign">
+                    <div class="card-header">
+                        <div>
+                            <p class="muted small">Configura tu nueva campaña</p>
+                            <h3>Crear Nueva Campaña</h3>
+                        </div>
+                        <div class="actions-inline">
+                            <button class="ghost">Cancelar</button>
+                            <button class="ghost">Guardar borrador</button>
+                            <button class="primary" id="submitCampaign">Crear campaña</button>
+                        </div>
+                    </div>
+
+                    <form id="campaignForm" class="form-grid">
+                        <div class="form-group">
+                            <label for="campaignName">Nombre</label>
+                            <input type="text" id="campaignName" name="campaignName" placeholder="Puesta de Sol - Madrid" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignDescription">Descripción</label>
+                            <input type="text" id="campaignDescription" name="campaignDescription" placeholder="Describir la campaña" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duración del Video</label>
+                            <div class="pill-group" id="durationPills">
+                                <button type="button" class="pill active" data-duration="15s">15s</button>
+                                <button type="button" class="pill" data-duration="30s">30s</button>
+                                <button type="button" class="pill" data-duration="60s">60s</button>
+                                <button type="button" class="pill" data-duration="custom">Custom</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Resolución</label>
+                            <div class="pill-group" id="resolutionPills">
+                                <button type="button" class="pill active" data-resolution="720p">720p</button>
+                                <button type="button" class="pill" data-resolution="1080p">1080p</button>
+                                <button type="button" class="pill" data-resolution="4K">4K</button>
+                                <button type="button" class="pill" data-resolution="custom">Custom</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Plataformas</label>
+                            <div class="pill-group selectable" id="platformPills">
+                                <button type="button" class="pill active" data-platform="Instagram">Instagram</button>
+                                <button type="button" class="pill" data-platform="TikTok">TikTok</button>
+                                <button type="button" class="pill" data-platform="YouTube">YouTube</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
