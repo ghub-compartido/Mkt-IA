@@ -52,10 +52,5 @@ def dashboard():
     return render_template("dashboard.html", **context)
 
 
-@app.route("/campaign/new")
-def create_campaign():
-    return render_template("create_campaign.html")
-
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

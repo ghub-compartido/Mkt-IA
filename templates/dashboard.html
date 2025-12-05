@@ -6,7 +6,7 @@
         <h1>Dashboard</h1>
         <p class="lead">Automatiza campañas y crea anuncios optimizados para TikTok, Instagram y YouTube.</p>
     </div>
-    <button class="btn primary">+ Nueva campaña</button>
+    <button class="btn primary" onclick="openCampaignModal()">+ Nueva campaña</button>
 </section>
 
 <section class="layout-grid">
@@ -88,7 +88,7 @@
         <div class="actions">
             <button class="btn secondary">Importar CSV</button>
             <button class="btn secondary">Filtros</button>
-            <button class="btn primary">+ Nueva Campaña</button>
+            <button class="btn primary" onclick="openCampaignModal()">+ Nueva Campaña</button>
         </div>
     </div>
     <div class="campaign-grid">
@@ -108,4 +108,184 @@
         {% endfor %}
     </div>
 </section>
+
+<!-- Modal for Create Campaign -->
+<div id="campaignModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeCampaignModal()">×</button>
+        <div style="padding: 24px;">
+            <!-- Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+                <div>
+                    <p class="eyebrow">Configura tu nueva campaña de video</p>
+                    <h2 style="margin: 8px 0;">Create New Campaign</h2>
+                </div>
+            </div>
+
+            <!-- Basic Information -->
+            <section class="panel" style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Basic Information</h3>
+                
+                <div style="margin-top: 20px;">
+                    <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Campaign Name</label>
+                    <input type="text" placeholder="Enter campaign name" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Description</label>
+                    <textarea placeholder="Describe your campaign objectives..." rows="3" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; resize: vertical; font-family: inherit;"></textarea>
+                </div>
+            </section>
+
+            <!-- Video Format -->
+            <section class="panel" style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Video Format</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Select the type of video content for your campaign.</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <label class="video-format-option" style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; transition: all 0.2s;">
+                        <input type="radio" name="videoFormat" checked style="margin-top: 2px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span style="font-size: 18px;">⚡</span>
+                                <strong style="font-size: 14px;">Short Videos</strong>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 0;">Quick, engaging content for maximum reach</p>
+                            <div style="display: flex; gap: 6px; margin-top: 8px;">
+                                <span class="badge" style="font-size: 11px; padding: 2px 8px; background: #F5F5F5; border-radius: 4px; color: #666;">15-60s</span>
+                                <span class="badge" style="font-size: 11px; padding: 2px 8px; background: #F5F5F5; border-radius: 4px; color: #666;">Vertical</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="video-format-option" style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; transition: all 0.2s;">
+                        <input type="radio" name="videoFormat" style="margin-top: 2px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                <span style="font-size: 18px;">▶️</span>
+                                <strong style="font-size: 14px;">Long Videos</strong>
+                            </div>
+                            <p style="font-size: 12px; color: #666; margin: 0;">In-depth content for detailed storytelling</p>
+                            <div style="display: flex; gap: 6px; margin-top: 8px;">
+                                <span class="badge" style="font-size: 11px; padding: 2px 8px; background: #F5F5F5; border-radius: 4px; color: #666;">1-30min</span>
+                                <span class="badge" style="font-size: 11px; padding: 2px 8px; background: #F5F5F5; border-radius: 4px; color: #666;">Horizontal</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Video Duration -->
+            <section class="panel" style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Video Duration</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Choose the length of your video content</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                    <button class="duration-btn" style="padding: 12px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #7C3AED;">15s</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px;">Quick Clip</div>
+                    </button>
+                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">30s</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px;">Standard</div>
+                    </button>
+                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">60s</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px;">Extended</div>
+                    </button>
+                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">Custom</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px;">Your Choice</div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Video Resolution -->
+            <section class="panel" style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Video Resolution</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Select the quality of your video output</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 4px;">720p</div>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">HD</div>
+                        <div style="font-size: 10px; color: #999;">1280 × 720</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">📱 Fast upload</div>
+                    </button>
+                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
+                        <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Full HD</span>
+                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #7C3AED; margin-bottom: 4px;">1080p</div>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Full HD</div>
+                        <div style="font-size: 10px; color: #999;">1920 × 1080</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">✅ Recommended</div>
+                    </button>
+                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
+                        <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Ultra HD</span>
+                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 4px;">4K</div>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Ultra HD</div>
+                        <div style="font-size: 10px; color: #999;">3840 × 2160</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">⭐ Premium quality</div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Publishing Platforms -->
+            <section class="panel" style="margin-bottom: 24px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Publishing Platforms</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Select where you want to publish your campaign</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                            <span style="font-size: 24px; color: white;">📷</span>
+                        </div>
+                        <strong style="font-size: 14px; margin-bottom: 4px;">Instagram</strong>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Stories, Reels & Feed posts</p>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">1:1</span>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
+                        <div style="width: 48px; height: 48px; background: #000000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                            <span style="font-size: 24px;">🎵</span>
+                        </div>
+                        <strong style="font-size: 14px; margin-bottom: 4px;">TikTok</strong>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Short form vertical videos</p>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">Vertical</span>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
+                        <div style="width: 48px; height: 48px; background: #FF0000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                            <span style="font-size: 24px; color: white;">▶️</span>
+                        </div>
+                        <strong style="font-size: 14px; margin-bottom: 4px;">YouTube</strong>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Long & short form content</p>
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">16:9</span>
+                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background: #EEF2FF; border-left: 3px solid #7C3AED; border-radius: 6px; font-size: 13px; color: #333;">
+                    <span style="color: #7C3AED;">ℹ️</span> <strong>Platform Optimization</strong> Videos will be automatically optimized for each selected platform's requirements and best practices.
+                </div>
+            </section>
+
+            <!-- Create Campaign Button -->
+            <div style="display: flex; justify-content: center; gap: 12px; margin-top: 32px; margin-bottom: 16px;">
+                <button class="btn secondary" onclick="closeCampaignModal()">Cancel</button>
+                <button class="btn primary" style="padding: 14px 32px; font-size: 16px; font-weight: 600;">Create Campaign →</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
