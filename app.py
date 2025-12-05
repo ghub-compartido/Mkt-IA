@@ -49,7 +49,7 @@ def get_dashboard_context():
 @app.route("/")
 def dashboard():
     context = get_dashboard_context()
-    return render_template("dashboard.html", **context)
+    return render_template("dashboard.html",  **context)
 
 
 if __name__ == "__main__":
