@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title if title else "VideoMark" }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4RhisPq4VqQZ1F6VZ1z1nZ0cbwB1H1Z1iYuZQ6pR+8abtTE1Pi6jizoRL1Z+zZOJQAA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="app-header">
+        <div class="brand">
+            <div class="brand-mark">V</div>
+            <div>
+                <div class="brand-title">VideoMark</div>
+                <div class="brand-subtitle">Marketing Video Assist</div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" class="nav-link"><i class="fa-solid fa-film"></i> Campañas</a>
+            <a href="/campaign/new" class="nav-link {% if '/campaign' in request.path %}active{% endif %}"><i class="fa-solid fa-plus"></i> Nueva campaña</a>
+            <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Ajustes</a>
+        </nav>
+        <div class="header-actions">
+            <button class="btn secondary">Descargar</button>
+            <button class="btn primary">Publicar</button>
+        </div>
+        <button class="mobile-menu" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="user-avatar">CM</div>
+                <div>
+                    <div class="user-name">Carlos Méndez</div>
+                    <div class="user-role">Product Manager</div>
+                </div>
+            </div>
+            <div class="sidebar-links">
+                <a href="/" class="sidebar-link {% if request.path == '/' %}active{% endif %}"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
+                <a href="#" class="sidebar-link"><i class="fa-solid fa-layer-group"></i> Templates</a>
+                <a href="#" class="sidebar-link"><i class="fa-regular fa-circle-play"></i> Mi biblioteca</a>
+                <a href="/campaign/new" class="sidebar-link {% if '/campaign' in request.path %}active{% endif %}"><i class="fa-regular fa-rectangle-list"></i> Campañas</a>
+                <a href="#" class="sidebar-link"><i class="fa-solid fa-chart-pie"></i> Analítica</a>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn secondary full">Soporte</button>
+            </div>
+        </aside>
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

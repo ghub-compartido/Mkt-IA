@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page-header">
+    <div>
+        <p class="eyebrow">Marketing Video Assist • Beta</p>
+        <h1>Dashboard</h1>
+        <p class="lead">Automatiza campañas y crea anuncios optimizados para TikTok, Instagram y YouTube.</p>
+    </div>
+    <button class="btn primary">+ Nueva campaña</button>
+</section>
+
+<section class="layout-grid">
+    <div class="panel stack">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Formato de Video</p>
+                <h3>TikTok (9:16)</h3>
+            </div>
+            <span class="pill">Recomendado</span>
+        </div>
+        <p class="muted">Optimizado para formatos verticales para mejor interacción.</p>
+        <div class="panel-row">
+            <span class="pill neutral">15 segundos</span>
+            <span class="pill">Red social</span>
+            <span class="pill">Vertical 9:16</span>
+        </div>
+        <button class="btn full primary">Generar Video</button>
+    </div>
+    <div class="panel stack">
+        <div class="panel-header">
+            <div>
+                <p class="eyebrow">Vista Previa del Video</p>
+                <h3>Archivo de video</h3>
+            </div>
+            <div class="ghost-box">Vista previa del video</div>
+        </div>
+        <div class="video-details">
+            <div class="panel-row">
+                <span class="pill neutral">0:15</span>
+                <span class="pill">Lista para publicar</span>
+            </div>
+            <div class="action-list">
+                <button class="btn ghost">Música</button>
+                <button class="btn ghost">Texto</button>
+                <button class="btn ghost">Recortar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="panel stats">
+    <div>
+        <p class="eyebrow">Estadísticas Rápidas</p>
+        <h4>Tiktok</h4>
+        <div class="stat-row">
+            <div>
+                <span class="stat-value">84K</span>
+                <p class="muted">Imp</p>
+            </div>
+            <div>
+                <span class="stat-value">6.8%</span>
+                <p class="muted">CTR</p>
+            </div>
+            <div>
+                <span class="stat-value">43.2k</span>
+                <p class="muted">Views</p>
+            </div>
+            <div>
+                <span class="stat-value">12.3k</span>
+                <p class="muted">Likes</p>
+            </div>
+        </div>
+    </div>
+    <div class="separator"></div>
+    <div>
+        <p class="eyebrow">Campañas Activas</p>
+        <h2>125K</h2>
+        <p class="muted">En las últimas 24h</p>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-header">
+        <div>
+            <p class="eyebrow">Mis Campañas</p>
+            <h2>Campañas del trimestre</h2>
+        </div>
+        <div class="actions">
+            <button class="btn secondary">Importar CSV</button>
+            <button class="btn secondary">Filtros</button>
+            <button class="btn primary">+ Nueva Campaña</button>
+        </div>
+    </div>
+    <div class="campaign-grid">
+        {% for campaign in campaigns %}
+        <article class="campaign-card">
+            <div class="card-body">
+                <div class="ghost-box small"></div>
+                <h4>{{ campaign.title }}</h4>
+                <p class="muted">{{ campaign.platforms | join(', ') }}</p>
+            </div>
+            <footer class="card-footer">
+                <div class="pill neutral">{{ campaign.status }}</div>
+                <div class="pill">{{ campaign.views }} vistas</div>
+                <div class="pill">{{ campaign.likes }} likes</div>
+            </footer>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
