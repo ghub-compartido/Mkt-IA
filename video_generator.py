@@ -255,13 +255,24 @@ def crear_video_campana(campaign_data: dict) -> dict:
         print(f"💾 Video guardado localmente en: {local_path}")
         print(f"✅ Video generado exitosamente!")
 
+        # Esperar a que GitHub propague el archivo con spinner
+        spinner_chars = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+        print("⏳ Esperando a que GitHub propague el archivo...", end="", flush=True)
+        for i in range(50):  # 5 segundos (50 * 0.1s)
+            print(f"\r⏳ {spinner_chars[i % len(spinner_chars)]} Esperando a que GitHub propague el archivo... ({(i+1)*0.1:.1f}s)", end="", flush=True)
+            time.sleep(0.1)
+        print("\r✅ GitHub listo!                                              ")
         
-        print(f"📤 Enviando video a Mulesoft...")
+        # Enviar a Mulesoft
+        video_url_github = f"https://raw.githubusercontent.com/ghub-compartido/Mkt-IA/main/videos-sora/{os.path.basename(campaign_folder)}/{filename}"
+        mulesoft_url = f"https://instagramreels-i6qmxs.cgxe76.usa-e2.cloudhub.io/api/data?url={video_url_github}"
+        
+        print("📤 Enviando petición POST a Mulesoft:")
+        print(f"   URL: {mulesoft_url}")
 
-
-        print("URL final:", response.url)
-        print("Status code:", response.status_code)
-        print("Respuesta:", response.json())
+        response = requests.post(mulesoft_url)
+        print(f"✅ Status code: {response.status_code}")
+        print(f"📩 Respuesta: {response.text}")
 
         
         return {
@@ -270,7 +281,7 @@ def crear_video_campana(campaign_data: dict) -> dict:
             "video_id": video_id,
             "filename": filename,
             "campaign_folder": campaign_folder,
-            "mulesoft_result": mulesoft_result
+            "mulesoft_status": response.status_code
         }
         
     except Exception as e:
