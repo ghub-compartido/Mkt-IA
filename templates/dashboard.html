@@ -9,44 +9,6 @@
     <button class="btn primary" onclick="openCampaignModal()">+ Nueva campaña</button>
 </section>
 
-<section class="layout-grid">
-    <div class="panel stack">
-        <div class="panel-header">
-            <div>
-                <p class="eyebrow">Formato de Video</p>
-                <h3>TikTok (9:16)</h3>
-            </div>
-            <span class="pill">Recomendado</span>
-        </div>
-        <p class="muted">Optimizado para formatos verticales para mejor interacción.</p>
-        <div class="panel-row">
-            <span class="pill neutral">15 segundos</span>
-            <span class="pill">Red social</span>
-            <span class="pill">Vertical 9:16</span>
-        </div>
-        <button class="btn full primary">Generar Video</button>
-    </div>
-    <div class="panel stack">
-        <div class="panel-header">
-            <div>
-                <p class="eyebrow">Vista Previa del Video</p>
-                <h3>Archivo de video</h3>
-            </div>
-            <div class="ghost-box">Vista previa del video</div>
-        </div>
-        <div class="video-details">
-            <div class="panel-row">
-                <span class="pill neutral">0:15</span>
-                <span class="pill">Lista para publicar</span>
-            </div>
-            <div class="action-list">
-                <button class="btn ghost">Música</button>
-                <button class="btn ghost">Texto</button>
-                <button class="btn ghost">Recortar</button>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="panel stats">
     <div>
@@ -95,9 +57,16 @@
         {% for campaign in campaigns %}
         <article class="campaign-card">
             <div class="card-body">
-                <div class="ghost-box small"></div>
-                <h4>{{ campaign.title }}</h4>
+                <button class="video-thumbnail-container" onclick="videoPreview.open('/{{ campaign.videoPath }}', '{{ campaign.title }}')" style="position: relative; width: 100%; height: 180px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: all 0.3s;">
+                    <span style="font-size: 48px;">▶️</span>
+                </button>
+                <h4 style="margin-top: 12px;">{{ campaign.title }}</h4>
                 <p class="muted">{{ campaign.platforms | join(', ') }}</p>
+                <div style="display: flex; gap: 8px; margin-top: 8px; font-size: 11px; color: #666;">
+                    <span>📐 {{ campaign.resolution }}</span>
+                    <span>⏱️ {{ campaign.duration }}</span>
+                    <span>📹 {{ campaign.format }}</span>
+                </div>
             </div>
             <footer class="card-footer">
                 <div class="pill neutral">{{ campaign.status }}</div>
@@ -128,12 +97,12 @@
                 
                 <div style="margin-top: 20px;">
                     <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Campaign Name</label>
-                    <input type="text" placeholder="Enter campaign name" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
+                    <input id="campaignName" type="text" placeholder="Enter campaign name" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;">
                 </div>
 
                 <div style="margin-top: 16px;">
-                    <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Description</label>
-                    <textarea placeholder="Describe your campaign objectives..." rows="3" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; resize: vertical; font-family: inherit;"></textarea>
+                    <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Prompt</label>
+                    <textarea id="campaignDescription" placeholder="Describe your campaign objectives..." rows="3" style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none; resize: vertical; font-family: inherit;"></textarea>
                 </div>
             </section>
 
@@ -148,7 +117,7 @@
                         <div>
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                 <span style="font-size: 18px;">⚡</span>
-                                <strong style="font-size: 14px;">Short Videos</strong>
+                                <strong class="option-title" style="font-size: 14px;">Short Videos</strong>
                             </div>
                             <p style="font-size: 12px; color: #666; margin: 0;">Quick, engaging content for maximum reach</p>
                             <div style="display: flex; gap: 6px; margin-top: 8px;">
@@ -163,7 +132,7 @@
                         <div>
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                 <span style="font-size: 18px;">▶️</span>
-                                <strong style="font-size: 14px;">Long Videos</strong>
+                                <strong class="option-title" style="font-size: 14px;">Long Videos</strong>
                             </div>
                             <p style="font-size: 12px; color: #666; margin: 0;">In-depth content for detailed storytelling</p>
                             <div style="display: flex; gap: 6px; margin-top: 8px;">
@@ -181,22 +150,32 @@
                 <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Choose the length of your video content</p>
                 
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
-                    <button class="duration-btn" style="padding: 12px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; transition: all 0.2s;">
+                    <button class="duration-btn" data-duration="15" style="padding: 12px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; transition: all 0.2s;">
                         <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #7C3AED;">15s</div>
                         <div style="font-size: 11px; color: #666; margin-top: 2px;">Quick Clip</div>
                     </button>
-                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                    <button class="duration-btn" data-duration="30" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
                         <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">30s</div>
                         <div style="font-size: 11px; color: #666; margin-top: 2px;">Standard</div>
                     </button>
-                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                    <button class="duration-btn" data-duration="60" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
                         <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">60s</div>
                         <div style="font-size: 11px; color: #666; margin-top: 2px;">Extended</div>
                     </button>
-                    <button class="duration-btn" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                    <button class="duration-btn custom-btn" data-duration="custom" style="padding: 12px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
                         <div class="duration-title" style="font-size: 18px; font-weight: 600; color: #333;">Custom</div>
                         <div style="font-size: 11px; color: #666; margin-top: 2px;">Your Choice</div>
                     </button>
+                </div>
+                
+                <!-- Custom Duration Input -->
+                <div id="customDurationInput" style="display: none; margin-top: 16px; padding: 16px; background: #F5F3FF; border: 2px solid #7C3AED; border-radius: 8px;">
+                    <label style="display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: #333;">Enter custom duration (seconds)</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input id="customSeconds" type="number" min="4" max="60" placeholder="4-60" style="flex: 1; padding: 8px 12px; border: 1px solid #7C3AED; border-radius: 6px; font-size: 14px; outline: none;">
+                        <span style="font-size: 14px; color: #666;">seconds</span>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin: 8px 0 0 0;">💡 Sora accepts videos between 4 and 60 seconds</p>
                 </div>
             </section>
 
@@ -205,26 +184,33 @@
                 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Video Resolution</h3>
                 <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Select the quality of your video output</p>
                 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                    <button class="resolution-btn" data-resolution="720p" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.2s;">
                         <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 4px;">720p</div>
                         <div style="font-size: 11px; color: #666; margin-bottom: 4px;">HD</div>
                         <div style="font-size: 10px; color: #999;">1280 × 720</div>
-                        <div style="font-size: 10px; color: #999; margin-top: 4px;">📱 Fast upload</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">💻 Horizontal</div>
                     </button>
-                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
-                        <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Full HD</span>
-                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #7C3AED; margin-bottom: 4px;">1080p</div>
-                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Full HD</div>
-                        <div style="font-size: 10px; color: #999;">1920 × 1080</div>
+                    <button class="resolution-btn" data-resolution="720x1280" style="padding: 16px; border: 2px solid #7C3AED; border-radius: 8px; background: #F5F3FF; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
+                        <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Vertical</span>
+                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #7C3AED; margin-bottom: 4px;">720x1280</div>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">HD Vertical</div>
+                        <div style="font-size: 10px; color: #999;">720 × 1280</div>
                         <div style="font-size: 10px; color: #999; margin-top: 4px;">✅ Recommended</div>
                     </button>
-                    <button class="resolution-btn" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
+                    <button class="resolution-btn" data-resolution="1080p" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
+                        <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Full HD</span>
+                        <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 4px;">1080p</div>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Full HD</div>
+                        <div style="font-size: 10px; color: #999;">1920 × 1080</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">💻 Horizontal</div>
+                    </button>
+                    <button class="resolution-btn" data-resolution="4k" style="padding: 16px; border: 2px solid #E0E0E0; border-radius: 8px; background: white; cursor: pointer; text-align: center; position: relative; transition: all 0.2s;">
                         <span style="position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; background: #7C3AED; color: white; border-radius: 4px; font-weight: 600;">Ultra HD</span>
                         <div class="resolution-title" style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 4px;">4K</div>
                         <div style="font-size: 11px; color: #666; margin-bottom: 4px;">Ultra HD</div>
                         <div style="font-size: 10px; color: #999;">3840 × 2160</div>
-                        <div style="font-size: 10px; color: #999; margin-top: 4px;">⭐ Premium quality</div>
+                        <div style="font-size: 10px; color: #999; margin-top: 4px;">⭐ Premium</div>
                     </button>
                 </div>
             </section>
@@ -234,40 +220,31 @@
                 <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Publishing Platforms</h3>
                 <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Select where you want to publish your campaign</p>
                 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
-                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                            <span style="font-size: 24px; color: white;">📷</span>
+                <div style="display: flex; gap: 16px; align-items: center; justify-content: center;">
+                    <label style="display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer;">
+                        <div style="width: 64px; height: 64px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4); border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <span style="font-size: 32px; color: white;">📷</span>
                         </div>
-                        <strong style="font-size: 14px; margin-bottom: 4px;">Instagram</strong>
-                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Stories, Reels & Feed posts</p>
-                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
-                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">1:1</span>
-                        </div>
+                        <strong style="font-size: 12px; margin-top: 8px; color: #333;">Instagram</strong>
                     </label>
 
-                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
-                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
-                        <div style="width: 48px; height: 48px; background: #000000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                            <span style="font-size: 24px;">🎵</span>
+                    <label style="display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer;">
+                        <div style="width: 64px; height: 64px; background: #000000; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <span style="font-size: 32px;">🎵</span>
                         </div>
-                        <strong style="font-size: 14px; margin-bottom: 4px;">TikTok</strong>
-                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Short form vertical videos</p>
-                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
-                            <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">Vertical</span>
-                        </div>
+                        <strong style="font-size: 12px; margin-top: 8px; color: #333;">TikTok</strong>
                     </label>
 
-                    <label style="display: flex; flex-direction: column; padding: 20px 16px; border: 2px solid #E0E0E0; border-radius: 12px; cursor: pointer; background: white; position: relative;">
-                        <input type="checkbox" style="position: absolute; top: 12px; right: 12px;">
-                        <div style="width: 48px; height: 48px; background: #FF0000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                            <span style="font-size: 24px; color: white;">▶️</span>
+                    <label style="display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative;">
+                        <input type="checkbox" style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; cursor: pointer;">
+                        <div style="width: 64px; height: 64px; background: #FF0000; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            <span style="font-size: 32px; color: white;">▶️</span>
                         </div>
-                        <strong style="font-size: 14px; margin-bottom: 4px;">YouTube</strong>
-                        <p style="font-size: 12px; color: #666; margin: 0 0 8px 0;">Long & short form content</p>
+                        <strong style="font-size: 12px; margin-top: 8px; color: #333;">YouTube</strong>
+                    </label>
+                </div>
                         <div style="display: flex; gap: 4px; flex-wrap: wrap;">
                             <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">16:9</span>
                             <span style="font-size: 10px; padding: 2px 6px; background: #F5F5F5; border-radius: 4px; color: #666;">9:16</span>
@@ -280,10 +257,21 @@
                 </div>
             </section>
 
+            <!-- Test Mode -->
+            <section class="panel" style="margin-bottom: 24px; background: #FFF3E0; border: 2px solid #FF9800;">
+                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <input type="checkbox" id="testMode" style="width: 20px; height: 20px; cursor: pointer;">
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600; color: #E65100;">🧪 Modo Prueba (Test Mode)</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 4px;">Usar primer video de videos-sora/ en lugar de generar nuevo (ahorra tiempo y API calls)</div>
+                    </div>
+                </label>
+            </section>
+
             <!-- Create Campaign Button -->
             <div style="display: flex; justify-content: center; gap: 12px; margin-top: 32px; margin-bottom: 16px;">
                 <button class="btn secondary" onclick="closeCampaignModal()">Cancel</button>
-                <button class="btn primary" style="padding: 14px 32px; font-size: 16px; font-weight: 600;">Create Campaign →</button>
+                <button class="btn primary" onclick="createCampaign()" style="padding: 14px 32px; font-size: 16px; font-weight: 600;">Create Campaign →</button>
             </div>
         </div>
     </div>

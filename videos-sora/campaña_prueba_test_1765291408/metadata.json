@@ -1,0 +1,16 @@
+{
+  "campaignName": "Campaña prueba",
+  "description": "prueba prompt",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-09 15:43:28",
+  "videoFile": "campaña_prueba_test_1765291408.mp4",
+  "videoId": "test_1765291408",
+  "testMode": true,
+  "sourceVideo": "sdsd_video_69.mp4"
+}
