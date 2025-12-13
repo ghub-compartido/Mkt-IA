@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 from video_generator import crear_video_campana
 import os
 import json
+import requests
 
 app = Flask(__name__)
 
@@ -146,6 +147,74 @@ def serve_video(filepath):
     """
     videos_dir = os.path.join(os.getcwd(), "videos-sora")
     return send_from_directory(videos_dir, filepath)
+
+
+@app.route("/api/openai/balance")
+def get_openai_balance():
+    """
+    Obtiene el saldo/créditos disponibles de OpenAI
+    Nota: OpenAI no tiene un endpoint directo para saldo, 
+    usamos el billing dashboard API
+    """
+    try:
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            return jsonify({
+                "success": False,
+                "error": "OPENAI_API_KEY no configurada"
+            }), 400
+        
+        # Obtener información de la organización y uso
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Obtener límites de uso (subscription)
+        response = requests.get(
+            "https://api.openai.com/v1/dashboard/billing/subscription",
+            headers=headers
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            hard_limit = data.get("hard_limit_usd", 0)
+            
+            # Obtener uso del mes actual
+            from datetime import datetime, timedelta
+            today = datetime.now()
+            start_date = today.replace(day=1).strftime("%Y-%m-%d")
+            end_date = (today + timedelta(days=1)).strftime("%Y-%m-%d")
+            
+            usage_response = requests.get(
+                f"https://api.openai.com/v1/dashboard/billing/usage?start_date={start_date}&end_date={end_date}",
+                headers=headers
+            )
+            
+            if usage_response.status_code == 200:
+                usage_data = usage_response.json()
+                total_usage = usage_data.get("total_usage", 0) / 100  # Convertir centavos a dólares
+                remaining = hard_limit - total_usage
+                
+                return jsonify({
+                    "success": True,
+                    "balance": round(remaining, 2),
+                    "used": round(total_usage, 2),
+                    "limit": hard_limit
+                })
+        
+        # Si falla, intentar con el endpoint de modelos como fallback
+        return jsonify({
+            "success": True,
+            "balance": "N/A",
+            "message": "No se pudo obtener el saldo exacto"
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 
 if __name__ == "__main__":

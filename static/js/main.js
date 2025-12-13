@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebar?.classList.toggle('open');
     });
 
+    // Cargar saldo de OpenAI
+    loadOpenAIBalance();
+
     document.querySelectorAll('.pill.selectable').forEach(btn => {
         btn.addEventListener('click', () => {
             const group = btn.parentElement;
@@ -262,5 +265,45 @@ async function createCampaign() {
         createBtn.disabled = false;
         createBtn.textContent = originalText;
         createBtn.style.opacity = '1';
+    }
+}
+
+// Función para cargar el saldo de OpenAI
+async function loadOpenAIBalance() {
+    const balanceElement = document.getElementById('openaiBalance');
+    const amountElement = document.getElementById('balanceAmount');
+    
+    if (!balanceElement || !amountElement) return;
+    
+    balanceElement.classList.add('loading');
+    amountElement.textContent = '...';
+    
+    try {
+        const response = await fetch('/api/openai/balance');
+        const data = await response.json();
+        
+        if (data.success && data.balance !== 'N/A') {
+            const balance = parseFloat(data.balance);
+            amountElement.textContent = `$${balance.toFixed(2)}`;
+            
+            // Cambiar color según el saldo
+            balanceElement.classList.remove('loading', 'low', 'critical');
+            if (balance < 5) {
+                balanceElement.classList.add('critical');
+            } else if (balance < 20) {
+                balanceElement.classList.add('low');
+            }
+            
+            // Actualizar tooltip
+            balanceElement.title = `Saldo: $${balance.toFixed(2)} | Usado: $${data.used} | Límite: $${data.limit}`;
+        } else {
+            amountElement.textContent = 'N/A';
+            balanceElement.classList.remove('loading');
+        }
+    } catch (error) {
+        console.error('Error al cargar saldo OpenAI:', error);
+        amountElement.textContent = 'Error';
+        balanceElement.classList.remove('loading');
+        balanceElement.classList.add('critical');
     }
 }

@@ -21,6 +21,10 @@
             <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
             <a href="#" class="nav-link"><i class="fa-solid fa-film"></i> Campañas</a>
         </nav>
+        <div class="openai-balance" id="openaiBalance" title="Saldo OpenAI">
+            <i class="fa-solid fa-coins"></i>
+            <span id="balanceAmount">--</span>
+        </div>
         <button class="mobile-menu" aria-label="Abrir menú">
             <i class="fa-solid fa-bars"></i>
         </button>
