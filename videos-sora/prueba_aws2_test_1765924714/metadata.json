@@ -1,0 +1,16 @@
+{
+  "campaignName": "prueba aws2",
+  "description": "ede",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-16 23:38:34",
+  "videoFile": "prueba_aws2_test_1765924714.mp4",
+  "videoId": "test_1765924714",
+  "testMode": true,
+  "sourceVideo": "campaing_video_69.mp4"
+}

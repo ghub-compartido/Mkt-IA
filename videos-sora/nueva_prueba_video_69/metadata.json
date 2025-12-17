@@ -1,0 +1,14 @@
+{
+  "campaignName": "nueva prueba",
+  "description": "un gato programando",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-15 18:38:01",
+  "videoFile": "nueva_prueba_video_69.mp4",
+  "videoId": "video_69404736446481918407aa92da60a6c10fa23bb74feb85a7"
+}

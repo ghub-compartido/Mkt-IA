@@ -1,0 +1,16 @@
+{
+  "campaignName": "efwfew",
+  "description": "werwr",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-17 10:15:57",
+  "videoFile": "efwfew_test_1765962957.mp4",
+  "videoId": "test_1765962957",
+  "testMode": true,
+  "sourceVideo": "campaing_video_69.mp4"
+}

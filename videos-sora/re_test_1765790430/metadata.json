@@ -1,0 +1,16 @@
+{
+  "campaignName": "re",
+  "description": "rere",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-15 10:20:30",
+  "videoFile": "re_test_1765790430.mp4",
+  "videoId": "test_1765790430",
+  "testMode": true,
+  "sourceVideo": "campaing_video_69.mp4"
+}

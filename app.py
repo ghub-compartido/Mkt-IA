@@ -119,20 +119,76 @@ def create_campaign_api():
         
         return jsonify({
             "success": True,
-            "message": "Campaña creada exitosamente",
+            "message": "Campaña creada - pendiente de aprobación",
+            "awaiting_approval": result.get("awaiting_approval", True),
             "data": {
                 "campaignName": campaign_name,
                 "videoId": result["video_id"],
                 "videoUrl": result["video_url"],
+                "localPreviewUrl": "/" + result.get("local_preview_path", "").replace("\\", "/"),
                 "filename": result["filename"],
                 "duration": campaign_data["duration"],
                 "resolution": campaign_data["resolution"],
-                "platforms": campaign_data["platforms"]
+                "platforms": campaign_data["platforms"],
+                "videoFormat": result.get("video_format", campaign_data["videoFormat"])
             }
         })
         
     except Exception as e:
         print(f"❌ Error al crear campaña: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+
+@app.route("/api/campaign/publish", methods=["POST"])
+def publish_campaign_api():
+    """Endpoint para publicar campaña a Mulesoft después de aprobación"""
+    try:
+        data = request.get_json()
+        
+        video_url = data.get("videoUrl", "")
+        video_format = data.get("videoFormat", "short")
+        campaign_name = data.get("campaignName", "")
+        
+        if not video_url:
+            return jsonify({
+                "success": False,
+                "error": "URL del video es requerida"
+            }), 400
+        
+        print(f"\n{'='*60}")
+        print(f"📤 Publicando campaña: {campaign_name}")
+        print(f"{'='*60}")
+        
+        # Construir URL de Mulesoft
+        mulesoft_url = f"https://instagramreels-i6qmxs.cgxe76.usa-e2.cloudhub.io/api/data?url={video_url}"
+        if video_format == "long":
+            mulesoft_url += "&media=REELS"
+        else:
+            mulesoft_url += "&media=STORIES"
+        
+        print(f"📤 Enviando petición POST a Mulesoft:")
+        print(f"   URL: {mulesoft_url}")
+        
+        response = requests.post(mulesoft_url)
+        print(f"✅ Status code: {response.status_code}")
+        print(f"📩 Respuesta: {response.text}")
+        
+        print(f"{'='*60}")
+        print(f"✅ Campaña publicada exitosamente!")
+        print(f"{'='*60}\n")
+        
+        return jsonify({
+            "success": True,
+            "message": "Campaña publicada exitosamente",
+            "mulesoft_status": response.status_code,
+            "mulesoft_response": response.text
+        })
+        
+    except Exception as e:
+        print(f"❌ Error al publicar campaña: {str(e)}")
         return jsonify({
             "success": False,
             "error": str(e)

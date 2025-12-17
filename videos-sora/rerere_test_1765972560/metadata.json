@@ -1,0 +1,16 @@
+{
+  "campaignName": "rerere",
+  "description": "ere",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-17 12:56:00",
+  "videoFile": "rerere_test_1765972560.mp4",
+  "videoId": "test_1765972560",
+  "testMode": true,
+  "sourceVideo": "campaing_video_69.mp4"
+}

@@ -1,0 +1,14 @@
+{
+  "campaignName": "Campaña123",
+  "description": "Un gato teletrabajando con su portatil",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-15 09:59:48",
+  "videoFile": "campaña123_video_69.mp4",
+  "videoId": "video_693fcd9fc6488190bf95c69cd21402e70fe80eb818510340"
+}

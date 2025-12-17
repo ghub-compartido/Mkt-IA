@@ -1,0 +1,16 @@
+{
+  "campaignName": "prueba aws",
+  "description": "dd",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-16 23:37:20",
+  "videoFile": "prueba_aws_test_1765924640.mp4",
+  "videoId": "test_1765924640",
+  "testMode": true,
+  "sourceVideo": "campaing_video_69.mp4"
+}

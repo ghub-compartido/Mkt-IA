@@ -6,6 +6,7 @@ import os
 import sys
 import requests
 import time
+from tiktok_configure.aws_uploder import uoploader_aws
 
 
 # Agregar el directorio sora al path
@@ -134,44 +135,35 @@ def crear_video_campana(campaign_data: dict) -> dict:
             
             print(f"📝 Metadata guardada en: {new_metadata_path}")
             
-            # Subir a GitHub PRIMERO
+            # Subir a AWS PRIMERO
             repo_path = f"videos-sora/{new_folder_name}/{new_video_filename}"
-            print(f"☁️  Subiendo video de prueba a GitHub: {repo_path}")
+            print(f"☁️  Subiendo video de prueba a AWS: {repo_path}")
             try:
-                video_url = subir_a_github(new_video_path, repo_path)
+                # video_url = subir_a_github(new_video_path, repo_path)
+                video_url = uoploader_aws(new_video_path)
             except Exception as e:
                 # Si ya existe en GitHub, construir la URL manualmente
-                video_url = f"https://raw.githubusercontent.com/{os.getenv('GITHUB_OWNER')}/{os.getenv('GITHUB_REPO')}/{os.getenv('GITHUB_BRANCH', 'main')}/{repo_path}"
+                # video_url = f"https://raw.githubusercontent.com/{os.getenv('GITHUB_OWNER')}/{os.getenv('GITHUB_REPO')}/{os.getenv('GITHUB_BRANCH', 'main')}/{repo_path}"
                 print(f"⚠️  Video probablemente ya existe en GitHub, usando URL: {video_url}")
             
-            # Esperar a que GitHub propague el archivo con spinner
-            spinner_chars = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-            print("⏳ Esperando a que GitHub propague el archivo...", end="", flush=True)
-            for i in range(50):  # 5 segundos (50 * 0.1s)
-                print(f"\r⏳ {spinner_chars[i % len(spinner_chars)]} Esperando a que GitHub propague el archivo... ({(i+1)*0.1:.1f}s)", end="", flush=True)
-                time.sleep(0.1)
-            print("\r✅ GitHub listo!                                              ")
-            
-            # Enviar a Mulesoft DESPUÉS de subir a GitHub
-            video_url_github = f"https://raw.githubusercontent.com/ghub-compartido/Mkt-IA/main/videos-sora/{new_folder_name}/{new_video_filename}"
-            mulesoft_url = f"https://instagramreels-i6qmxs.cgxe76.usa-e2.cloudhub.io/api/data?url={video_url_github}"
-            
-            print("📤 Enviando petición POST a Mulesoft:")
-            print(f"   URL: {mulesoft_url}")
-
-            response = requests.post(mulesoft_url)
-            print(f"✅ Status code: {response.status_code}")
-            print(f"📩 Respuesta: {response.text}")
-            
+            print(f"💾 Video de prueba guardado en: {video_url}")
             print(f"✅ Modo prueba completado - Nueva campaña creada: {new_folder_name}")
+            print(f"⏸️  Esperando previsualización del usuario antes de publicar...")
             
+            # Ruta local para previsualización (relativa a videos-sora)
+            local_preview_path = f"videos-sora/{new_folder_name}/{new_video_filename}"
+            
+            # NO enviar a Mulesoft automáticamente - esperar confirmación del usuario
             return {
                 "success": True,
                 "video_url": video_url,
                 "video_id": test_campaign_id,
                 "filename": new_video_filename,
                 "test_mode": True,
-                "campaign_folder": new_folder_path
+                "campaign_folder": new_folder_path,
+                "video_format": video_format,
+                "awaiting_approval": True,
+                "local_preview_path": local_preview_path
             }
         
         # Convertir duración a entero
@@ -248,40 +240,24 @@ def crear_video_campana(campaign_data: dict) -> dict:
         
         # Subir a GitHub
         repo_path = f"videos-sora/{os.path.basename(campaign_folder)}/{filename}"
-        print(f"☁️  Subiendo a GitHub: {repo_path}")
-        video_url = subir_a_github(local_path, repo_path)
+        print(f"☁️  Subiendo a AWS: {repo_path}")
+        # video_url = subir_a_github(local_path, repo_path)
+        video_url = uoploader_aws(local_path)
         
         # NO eliminar archivo local - mantenerlo en videos-sora
         print(f"💾 Video guardado localmente en: {local_path}")
         print(f"✅ Video generado exitosamente!")
-
-        # Esperar a que GitHub propague el archivo con spinner
-        spinner_chars = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-        print("⏳ Esperando a que GitHub propague el archivo...", end="", flush=True)
-        for i in range(50):  # 5 segundos (50 * 0.1s)
-            print(f"\r⏳ {spinner_chars[i % len(spinner_chars)]} Esperando a que GitHub propague el archivo... ({(i+1)*0.1:.1f}s)", end="", flush=True)
-            time.sleep(0.1)
-        print("\r✅ GitHub listo!                                              ")
+        print(f"⏸️  Esperando previsualización del usuario antes de publicar...")
         
-        # Enviar a Mulesoft
-        video_url_github = f"https://raw.githubusercontent.com/ghub-compartido/Mkt-IA/main/videos-sora/{os.path.basename(campaign_folder)}/{filename}"
-        mulesoft_url = f"https://instagramreels-i6qmxs.cgxe76.usa-e2.cloudhub.io/api/data?url={video_url_github}"
-        
-        print("📤 Enviando petición POST a Mulesoft:")
-        print(f"   URL: {mulesoft_url}")
-
-        response = requests.post(mulesoft_url)
-        print(f"✅ Status code: {response.status_code}")
-        print(f"📩 Respuesta: {response.text}")
-
-        
+        # NO enviar a Mulesoft automáticamente - esperar confirmación del usuario
         return {
             "success": True,
             "video_url": video_url,
             "video_id": video_id,
             "filename": filename,
             "campaign_folder": campaign_folder,
-            "mulesoft_status": response.status_code
+            "video_format": video_format,
+            "awaiting_approval": True
         }
         
     except Exception as e:

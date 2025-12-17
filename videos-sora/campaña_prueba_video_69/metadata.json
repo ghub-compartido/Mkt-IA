@@ -1,0 +1,14 @@
+{
+  "campaignName": "Campaña Prueba",
+  "description": "Un gato pegando un bakflip ",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-15 09:52:01",
+  "videoFile": "campaña_prueba_video_69.mp4",
+  "videoId": "video_693fcbdd28c08191959307a73155c93f092554d80ef16ca5"
+}

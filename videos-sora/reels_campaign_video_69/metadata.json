@@ -1,0 +1,14 @@
+{
+  "campaignName": "reels_campaign",
+  "description": "loro pedaleando una bicicleta",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "long",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-15 10:27:50",
+  "videoFile": "reels_campaign_video_69.mp4",
+  "videoId": "video_693fd44e89248191996ca5f6391992a701e32abc50b720ec"
+}

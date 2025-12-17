@@ -1,0 +1,16 @@
+{
+  "campaignName": "gfgff",
+  "description": "gff",
+  "platforms": [
+    "instagram"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-15 10:06:30",
+  "videoFile": "gfgff_test_1765789590.mp4",
+  "videoId": "test_1765789590",
+  "testMode": true,
+  "sourceVideo": "campaña123_video_69.mp4"
+}
