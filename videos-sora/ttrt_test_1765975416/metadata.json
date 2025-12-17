@@ -1,0 +1,17 @@
+{
+  "campaignName": "ttrt",
+  "description": "trtrtr",
+  "platforms": [
+    "instagram",
+    "tiktok"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-17 13:43:36",
+  "videoFile": "ttrt_test_1765975416.mp4",
+  "videoId": "test_1765975416",
+  "testMode": true,
+  "sourceVideo": "6_test_1765974687.mp4"
+}

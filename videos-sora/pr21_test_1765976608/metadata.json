@@ -1,0 +1,17 @@
+{
+  "campaignName": "pr21",
+  "description": "Arbol cayendose al mar",
+  "platforms": [
+    "instagram",
+    "tiktok"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "15",
+  "published": false,
+  "createdAt": "2025-12-17 14:03:28",
+  "videoFile": "pr21_test_1765976608.mp4",
+  "videoId": "test_1765976608",
+  "testMode": true,
+  "sourceVideo": "6_test_1765974687.mp4"
+}

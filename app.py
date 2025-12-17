@@ -151,6 +151,7 @@ def publish_campaign_api():
         video_url = data.get("videoUrl", "")
         video_format = data.get("videoFormat", "short")
         campaign_name = data.get("campaignName", "")
+        platforms = data.get("platforms", [])
         
         if not video_url:
             return jsonify({
@@ -160,14 +161,31 @@ def publish_campaign_api():
         
         print(f"\n{'='*60}")
         print(f"📤 Publicando campaña: {campaign_name}")
+        print(f"📱 Plataformas: {platforms}")
         print(f"{'='*60}")
         
         # Construir URL de Mulesoft
         mulesoft_url = f"https://instagramreels-i6qmxs.cgxe76.usa-e2.cloudhub.io/api/data?url={video_url}"
+        
+        # Añadir formato de media
         if video_format == "long":
             mulesoft_url += "&media=REELS"
         else:
             mulesoft_url += "&media=STORIES"
+        
+        # Añadir plataforma: tiktok, insta, o all
+        platforms_lower = [p.lower() for p in platforms]
+        has_instagram = "instagram" in platforms_lower
+        has_tiktok = "tiktok" in platforms_lower
+        
+        if has_instagram and has_tiktok:
+            mulesoft_url += "&platform=all"
+        elif has_tiktok:
+            mulesoft_url += "&platform=tiktok"
+        elif has_instagram:
+            mulesoft_url += "&platform=insta"
+        else:
+            mulesoft_url += "&platform=all"  # Por defecto si no hay ninguna
         
         print(f"📤 Enviando petición POST a Mulesoft:")
         print(f"   URL: {mulesoft_url}")

@@ -1,0 +1,15 @@
+{
+  "campaignName": "both-sites",
+  "description": "un gato conduciendo un formula1",
+  "platforms": [
+    "instagram",
+    "tiktok"
+  ],
+  "videoFormat": "short",
+  "resolution": "720x1280",
+  "duration": "4",
+  "published": false,
+  "createdAt": "2025-12-17 13:55:12",
+  "videoFile": "both-sites_video_69.mp4",
+  "videoId": "video_6942a7e3f7d08191ba983ebf69bbb40e0afca725d4558c7c"
+}

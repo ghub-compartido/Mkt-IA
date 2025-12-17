@@ -362,7 +362,8 @@ async function confirmPublish() {
             body: JSON.stringify({
                 videoUrl: videoData.videoUrl,
                 videoFormat: videoData.videoFormat,
-                campaignName: videoData.campaignName
+                campaignName: videoData.campaignName,
+                platforms: videoData.platforms || []
             })
         });
         
