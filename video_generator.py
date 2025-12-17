@@ -249,6 +249,9 @@ def crear_video_campana(campaign_data: dict) -> dict:
         print(f"✅ Video generado exitosamente!")
         print(f"⏸️  Esperando previsualización del usuario antes de publicar...")
         
+        # Ruta local para previsualización
+        local_preview_path = f"videos-sora/{os.path.basename(campaign_folder)}/{filename}"
+        
         # NO enviar a Mulesoft automáticamente - esperar confirmación del usuario
         return {
             "success": True,
@@ -257,7 +260,8 @@ def crear_video_campana(campaign_data: dict) -> dict:
             "filename": filename,
             "campaign_folder": campaign_folder,
             "video_format": video_format,
-            "awaiting_approval": True
+            "awaiting_approval": True,
+            "local_preview_path": local_preview_path
         }
         
     except Exception as e:
